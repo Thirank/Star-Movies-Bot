@@ -95,31 +95,63 @@ python3 bot.py
 
 ## Commands
 ```
-logs - to get the rescent errors
-stats - to get status of files in db.
-filter - add manual filters
-filters - view filters
-connect - connect to PM.
-disconnect - disconnect from PM
-del - delete a filter
-delall - delete all filters
-deleteall - delete all index(autofilter)
-delete - delete a specific file from index.
-info - get user info
-id - get tg ids.
-imdb - fetch info from imdb.
-users - to get list of my users and ids.
-chats - to get list of the my chats and ids 
-index  - to add files from a channel
-leave  - to leave from a chat.
-disable  -  do disable a chat.
-enable - re-enable chat.
-ban  - to ban a user.
-unban  - to unban a user.
-channel - to get list of total connected channels
-broadcast - to broadcast a message to all Eva Maria users
-batch - to create link for multiple posts
-link - to create link for one post
+start - Check if 😊 I'm Alive
+help - How to Use❓
+about - to Know About Me 😌
+logs - Get The Recent Errors (Admin 👨🏻‍✈️ Only)
+send - Send Message to Spacific User 🤵🏻 (Admin 👨🏻‍✈️ Only)
+group_send - Send Message to Spacific Chat 🤵🏻 (Admin 👨🏻‍✈️ Only)
+stats - Get Status 📊 Of Files 📂 in Database (Admin 👨🏻‍✈️ Only)
+status - Get Status 📊 Of This Bot 🤖 (Admin 👨🏻‍✈️ Only)
+settings - Customize Bot Settings ⚙️ (Chat Admin 👨🏻‍✈️ Only)
+autofilter - On/Off Filers in a Chat (Chat Admin 👨🏻‍✈️ Only)
+filter - Add a Filter in Chat
+filters - List all the Filters of a Chat
+gfilter - Add a Global Filter in Chat
+gfilters - List all the Global Filters of a Chat
+del - Delete 🗑️ a Specific Filter in Chat 
+delall - Delete the Whole Filters in a Chat (Chat Admin 👨🏻‍✈️ Only)
+delg - Delete 🗑️ a Specific Global Filter in Chat 
+delallg - Delete the Whole Global Filters in a Chat (Chat Admin 👨🏻‍✈️ Only)
+delete - Delete 🗑️ a Specific File 📂 From Database (Admin 👨🏻‍✈️ Only)
+deleteall - Delete 🗑️ to All Files 📂 From Database (Admin 👨🏻‍✈️ Only)
+deletefiles - Delete 🗑️ PreDVD and CAMRip Files 📂 From Database (Admin 👨🏻‍✈️ Only)
+connect  - Connect a Particular Chat to Your PM
+disconnect  - Disconnect From a Chat 
+connections - List All Your Connections
+invite - Get The Invite 💌 Link 🔗 of Any Chat Which The Bot 🤖 is Admin 👨🏻‍✈️
+stickerid - Reply to Any Sticker to Get Sticker's ID
+id - Get ID of a Specified User
+info - Get Information About a User
+imdb - Get the Movie 🎥 Information From IMDB Source
+search - Get the Movie 🎥 Information from Various Sources
+set_template - Set a New Custom IMDB Template For Individual Groups (Chat Admin 👨🏻‍✈️ Only)
+font - Font is a Module For Make Your Text Stylish 🖊️
+share - Reply with Any Text to Get Share Link 🔗
+graph - Reply to a Photo or Video 🎥 Under 5MB
+text2speech - Reply with Text to Get Audio Speech 💬
+alive - Check Bot Alive or Not
+password - Generate Secret Password 🔑
+users - Get List of My Users and IDs
+junk_users - Clear All Deleted Accounts & Blocked Accounts From Database
+chats - Get List of The My Chats and IDs
+junk_chats - Clear Admin 👨🏻‍✈️ Removed Chats or Deactivated Chats on Database
+index - Add Files 📂 From a Channel
+setskip - Skip Number of Messages when Indexing Files 📂
+leave  - Leave From a Chat
+disable  - Disable a Chat
+enable - Enable a Chat
+ban  - Ban a User
+unban  - Unban a User
+channel - Get List of Total Connected Channels
+batch - Create Link 🔗 for Multiple Files 📂
+link - Create Link 🔗 for One File 📂 
+video - Download Video From YouTube with Any Link 🔗
+song - Download Song From YouTube with Song Name 
+short - Use This Command with Your Link 🔗 to Get Shorted Links 🔗
+restart - Restart The Bot 🤖 With Heroku
+group_broadcast - Broadcast a Message to All Groups 👥 
+broadcast - Broadcast a Message to All Users 📊
 ```
 ## Support
 [![telegram badge](https://img.shields.io/badge/Telegram-Group-30302f?style=flat&logo=telegram)](https://t.me/greymatters_bots_discussion)
