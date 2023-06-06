@@ -1,5 +1,4 @@
 git+https://github.com/Joelkb/cinemagoer
-pymongo[srv]==3.12.3
 pyrogram>=2.0.88
 imdbpy==2022.7.9
 tgcrypto==1.2.5
