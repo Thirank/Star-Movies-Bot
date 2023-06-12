@@ -71,6 +71,72 @@ async def give_filter(client, message):
     k = await manual_filters(client, message)
     if k == False:
         await auto_filter(client, message)
+        
+@Client.on_message(filters.private & filters.text & filters.incoming)
+async def pm_text(bot, message):
+    content = message.text
+    user = message.from_user.first_name
+    user_id = message.from_user.id
+    if content.startswith("/") or content.startswith("#"): return  # ignore commands and hashtags
+    if user_id in ADMINS: return # ignore admins
+    await message.reply_text("<b>Your Message Has Been Sent to My Moderators..!</b>")
+    await bot.send_message(
+        chat_id=LOG_CHANNEL,
+        text=f"<b>#PM_Message\n\nName :- {user}\n\nID :- {user_id}\n\nMovie :- {content}</b>"
+    )
+        
+
+@Client.on_callback_query(filters.regex(r"^lang"))
+async def language_check(bot, query):
+    _, userid, language = query.data.split("#")
+    if int(userid) not in [query.from_user.id, 0]:
+        return await query.answer(script.ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+    if language == "unknown":
+        return await query.answer("Select Any Language From The Below Buttons..!", show_alert=True)
+    movie = temp.KEYWORD.get(query.from_user.id)
+    if not movie:
+        return await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+    if language != "home":
+        movie = f"{movie} {language}"
+    files, offset, total_results = await get_search_results(query.message.chat.id, movie, offset=0, filter=True)
+    if files:
+        settings = await get_settings(query.message.chat.id)
+        temp.SEND_ALL_TEMP[query.from_user.id] = files
+    if settings['button']:   
+        
+@Client.on_callback_query(filters.regex(r"^select_lang"))
+async def select_language(bot, query):
+    _, userid = query.data.split("#")
+    if int(userid) not in [query.from_user.id, 0]:
+        return await query.answer(script.ALRT_TXT.format(query.from_user.first_name), show_alert=True)
+    btn = [[
+        InlineKeyboardButton("Select Your Mother Language 👇🏻", callback_data=f"lang#{userid}#unknown")
+    ],[
+        InlineKeyboardButton("தமிழ் ➠ Tamil", callback_data=f"lang#{userid}#tam")
+    ],[        
+        InlineKeyboardButton("ஆங்கிலம் ➠ English", callback_data=f"lang#{userid}#eng")
+    ],[        
+        InlineKeyboardButton("हिंदी ➠ Hindi", callback_data=f"lang#{userid}#hin")
+    ],[
+        InlineKeyboardButton("ಕನ್ನಡ ➠ Kannada", callback_data=f"lang#{userid}#kan")
+    ],[        
+        InlineKeyboardButton("తెలుగు ➠ Telugu", callback_data=f"lang#{userid}#tel")
+    ],[
+        InlineKeyboardButton("മലയാളം ➠ Malayalam", callback_data=f"lang#{userid}#mal")
+    ],[
+        InlineKeyboardButton("Multiple Audios", callback_data=f"lang#{userid}#multi")
+    ],[        
+        InlineKeyboardButton("Dual Audios", callback_data=f"lang#{userid}#dual")
+    ],[
+        InlineKeyboardButton("⬅️ Back", callback_data=f"lang#{userid}#home")
+    ]]
+    try:
+        await query.edit_message_reply_markup(
+            reply_markup=InlineKeyboardMarkup(btn)
+        )
+    except MessageNotModified:
+        pass
+    await query.answer()        
 
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
