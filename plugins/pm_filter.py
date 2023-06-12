@@ -166,9 +166,7 @@ async def language_check(bot, query):
     )        
     btn.insert(0, 
         [
-        InlineKeyboardButton(f'🌐 Languages', callback_data=f"select_lang#{req}"),
-        InlineKeyboardButton(f'📝 Tips', 'info'),
-        InlineKeyboardButton(f'🎬 {search}', 'rkbtn')
+        InlineKeyboardButton(f'🌐 Languages', callback_data=f"select_lang#{req}")
         ],
     )
     btn.insert(0, [
@@ -297,6 +295,11 @@ async def next_page(bot, query):
                 InlineKeyboardButton("Next ➡️", callback_data=f"next_{req}_{key}_{n_offset}")
             ],
         )
+    btn.insert(0, 
+        [
+        InlineKeyboardButton(f'🌐 Languages', callback_data=f"select_lang#{req}")
+        ],
+    )        
     btn.insert(0, 
         [
         InlineKeyboardButton(f'😇 Info', 'tips'),
@@ -1416,6 +1419,11 @@ async def auto_filter(client, msg, spoll=False):
         btn.append(
             [InlineKeyboardButton(text="🗓 No More Pages Available 1/1", callback_data="pages")]
         )
+    btn.insert(0, 
+        [
+        InlineKeyboardButton(f'🌐 Languages', callback_data=f"select_lang#{req}")
+        ],
+    )        
     btn.insert(0, 
         [
         InlineKeyboardButton(f'😇 Info', 'tips'),
