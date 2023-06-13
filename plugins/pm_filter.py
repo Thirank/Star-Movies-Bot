@@ -182,7 +182,9 @@ async def language_check(bot, query):
     except MessageNotModified:
         pass
     await query.answer()        
-        
+     else:
+        return await query.answer(f"Sorry, No Files 📂 Found For Your Query 🎥 {movie}.", show_alert=True)
+       
 @Client.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
     _, userid = query.data.split("#")
