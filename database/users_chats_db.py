@@ -1,5 +1,5 @@
 import motor.motor_asyncio
-from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT, AUTO_DELETE, MAX_BTN, AUTO_FFILTER, TUTORIAL_VIDEO, SHORTLINK_API, SHORTLINK_URL, IS_SHORTLINK
+from info import DATABASE_NAME, DATABASE_URI, IMDB, IMDB_TEMPLATE, MELCOW_NEW_USERS, P_TTI_SHOW_OFF, SINGLE_BUTTON, SPELL_CHECK_REPLY, PROTECT_CONTENT, SELF_DELETE, MAX_BTN, AUTO_FFILTER, TUTORIAL_VIDEO, SHORTLINK_API, SHORTLINK_URL, IS_SHORTLINK
 
 class Database:
     
@@ -119,7 +119,7 @@ class Database:
             'welcome_text': WELCOME_TEXT,
             'tutorial' : TUTORIAL_VIDEO,
             'max_btn': MAX_BTN,
-            'auto_delete': AUTO_DELETE,
+            'auto_delete': SELF_DELETE,
             'auto_ffilter': AUTO_FFILTER,
             'template': IMDB_TEMPLATE,
             'caption': FILE_CAPTION,
