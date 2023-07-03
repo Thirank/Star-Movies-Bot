@@ -766,10 +766,193 @@ async def save_template(client, message):
         return
 
     if len(message.command) < 2:
-        return await sts.edit("No Input!!")
+        return await sts.edit("**No Input!!**")
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"<b>Successfully Upgraded Your Template For {title} to\n\n{template}</b>")
+
+@Client.on_message(filters.command('set_shortner'))
+async def set_shortner(bot, message):
+    chat_type = message.chat.type
+    if chat_type == enums.ChatType.PRIVATE:
+        return await message.reply_text(f"<b>Hey {message.from_user.mention}, This command only works on groups !</b>")
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grpid = message.chat.id
+        title = message.chat.title
+    else:
+        return
+    data = message.text
+    userid = message.from_user.id
+    user = await bot.get_chat_member(grpid, userid)
+    if user.status != enums.ChatMemberStatus.ADMINISTRATOR and user.status != enums.ChatMemberStatus.OWNER and str(userid) not in ADMINS:
+        return await message.reply_text("<b>You don't have access to use this command !</b>")
+    else:
+        pass
+    try:
+        command, shortlink_url, api = data.split(" ")
+    except:
+        return await message.reply_text("<b>Command Incomplete :(\n\nGive me a shortlink and api along with the command !\n\nFormat: <code>/set_shortner tnshort.net d03a53149bf186ac74d58ff80d916f7a79ae5745</code></b>")
+    reply = await message.reply_text("<b>Please Wait...</b>")
+    await save_group_settings(grpid, 'shortlink', shortlink_url)
+    await save_group_settings(grpid, 'shortlink_api', api)
+    await save_group_settings(grpid, 'is_shortlink', True)
+    await reply.edit_text(f"<b>Successfully added shortlink API for {title}.\n\nCurrent Shortlink Website: <code>{shortlink_url}</code>\nCurrent API: <code>{api}</code></b>")
+
+@Client.on_message(filters.command('get_shortner'))
+async def get_shortner(client, message):
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+        title = message.chat.title
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    settings = await get_settings(grp_id)
+    url = settings["url"]
+    api = settings["api"]
+    await message.reply_text(f"Shortlink for {title}\n\nURL - {url}\nAPI - {api}")
+
+@Client.on_message(filters.command("set_tutorial"))
+async def set_tutorial_link(client, message):
+    chat_type = message.chat.type
+    if chat_type == enums.ChatType.PRIVATE:
+        await message.reply_text("<b>Please use this command in your group to set tutorial link.</b>")
+        return
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grpid = message.chat.id
+        title = message.chat.title
+    else:
+        return 
+    
+    userid = message.from_user.id
+    user = await client.get_chat_member(grpid, userid)
+    if user.status != enums.ChatMemberStatus.ADMINISTRATOR and user.status != enums.ChatMemberStatus.OWNER and str(userid) not in ADMINS:
+        await message.reply_text("<b>You don't have access to use this command!</b>")
+        return
+    
+    try:
+        tutorial = re.findall("(?P<url>https?://[^\s]+)", message.text)[0]
+    except:
+        await message.reply_text("<b>🛠️ Command Incomplete 🤔\n\n➥Give me a tutorial link along with the command!\n\n📌Example👇\n\n<code>/set_tutorial https://example.com</code>\n\n━━━━━━━━━━━━━━━━━━\n© @AKDverse\n</b>")
+        return
+    
+    await save_group_settings(grpid, 'tutorial', tutorial)
+    await message.reply_text(f"<b>📌 sᴜᴄᴄᴇssꜰᴜʟʏ ᴀᴅᴅᴇᴅ ᴛᴜᴛᴏʀɪᴀʟ 🎉\n\nʏᴏᴜʀ ᴛᴜᴛᴏʀɪᴀʟ ʟɪɴᴋ ꜰᴏʀ ɢʀᴏᴜᴘ {title}ɪs 👇\n\n☞{tutorial}\n\n© @Star_Moviess_Tamil\n</b>")
+
+@Client.on_message(filters.command('set_caption'))
+async def save_caption(client, message):
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+        title = message.chat.title
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    try:
+        caption = message.text.split(" ", 1)[1]
+    except:
+        return await message.reply_text("**__Use this Command to Set the Custom Caption for Your Files. For Setting Your Caption Send Caption in the Format\n`/set_caption`__\n\nFile Caption Keys\n• `{filename}` :- Replaced by the Filename.\n• `{filesize}` :- Replaced by the Filesize.\n• `{duration}` :- Replaced by the Duration of Videos.\n\nExample :- `/set_caption <b>File Name :- {filename}\n\n💾 File Size :- {filesize}\n\n⏰ Duration :- {duration}</b>`\n\n⚠️ Note :- You Can Check the Current Caption using /see_caption**")
+    
+    await save_group_settings(grp_id, 'caption', caption)
+    await message.reply_text(f"Successfully changed caption for {title} to\n\n{caption}")
+
+@Client.on_message(filters.command('set_welcome'))
+async def save_welcome(client, message):
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+            try:
+                chat = await client.get_chat(grpid)
+                title = chat.title
+            except:
+                await message.reply_text("Make sure I'm present in your group!!", quote=True)
+                return
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+        title = message.chat.title
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    try:
+        welcome = message.text.split(" ", 1)[1]
+    except:
+        return await message.reply_text("Command Incomplete!")
+    
+    await save_group_settings(grp_id, 'welcome_text', welcome)
+    await message.reply_text(f"Successfully changed welcome for {title} to\n\n{welcome}")
 
 @Client.on_message(filters.command("paste"))
 async def paste_func(_, message: Message):
@@ -1096,7 +1279,6 @@ async def purge(client, message):
     await status_message.delete()
 
 # Group Manage
-
 
 @Client.on_message(filters.command("ban"))
 async def ban_user(_, message):
