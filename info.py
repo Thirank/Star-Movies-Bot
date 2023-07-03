@@ -1,5 +1,4 @@
 import re
-import os
 from os import environ
 from time import time
 from os import getenv
@@ -89,25 +88,6 @@ CAPTION_BUTTON_URL = "https://t.me/Star_Moviess_Tamil"
 
    # Auto Delete For Bot Sending Files #
 FILE_DELETE_TIMER = int(environ.get('FILE_DELETE_TIMER', '3600'))
-
-class images(object):
-    
-    # DEFAULT THUMBNAIL ❌ NB: Thumbnails can’t be reused and can be only uploaded as a new file ❌
-    PDF_THUMBNAIL = None                               #  "./images/thumbnail.jpeg"   PDF_THUMBNAIL & THUMBNAIL_URL must point same img
-    THUMBNAIL_URL = "https://te.legra.ph/file/8dfa3760df91a218a629c.jpg"   # to inc. meadia edit speed
-
-class pdf(object):
-
-    MAX_FILE_SIZE = os.environ.get("MAX_FILE_SIZE", False)
-    
-    # default name, caption, lang [if needed]
-    DEFAULT_NAME = os.environ.get("DEFAULT_NAME", False)
-    
-    DEFAULT_CAPT = os.environ.get("DEFAULT_CAPTION", False)
-    
-    DEFAULT_LANG = os.environ.get("DEFAULT_LANG", "eng")  # use small letters
-
-    MULTI_LANG_SUP = True if os.environ.get('MULTI_LANG_SUP', "False") == "True" else False
 
 LOG_STR = "Current Cusomized Configurations are:-\n"
 LOG_STR += ("IMDB Results are Enabled, Bot will be showing imdb details for you queries.\n" if IMDB else "IMBD Results are disabled.\n")
