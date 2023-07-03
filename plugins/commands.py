@@ -2127,3 +2127,17 @@ async def short(link):
         return shorten_urls
     except Exception as error:
         return error
+
+# Text to PDF
+
+@Client.on_message(filters.private & filters.command(["text2pdf"]) & filters.incoming)
+async def text2PDF(bot, message):
+    try:
+        await message.reply_chat_action(enums.ChatAction.TYPING)
+        lang_code = await getLang(message.chat.id)
+        tTXT, tBTN = await translate(text="pdf2TXT['TEXT']", button="pdf2TXT['font_btn']", order=12121, lang_code=lang_code)
+        await message.reply_text(text=tTXT, reply_markup=tBTN)
+        await message.delete()
+    except Exception as Error:
+        logger.exception("🐞 %s: %s" %(file_name, Error), exc_info=True)
+	    
