@@ -56,6 +56,7 @@ CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", "<b>[Star Movies Tamil]
 BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
 IMDB_TEMPLATE = environ.get("IMDB_TEMPLATE", "<b>🎥 Movie :- <a href={url}>{title}</a>\n\n🎭 Genres :- {genres}\n\n📆 Year :- <a href={url}/releaseinfo>{year}</a>\n\n🌟 Rating :- <a href={url}/ratings>{rating}</a> / 10 (Based on {votes} Users Ratings.)\n\n🎙️ Languages :- {languages}\n\n⏰ Duration :- {runtime} Minutes\n\n🕺 Director :- {director}\n\n🗺️ Countries :- {countries}\n\n📢 Update Channel :-</b> <a href=https://t.me/Star_Moviess_Tamil><b>Star Movies Tamil</b></a>\n\n<b>🤖 Bot Channel :- <a href=https://t.me/Star_Bots_Tamil><b></b>Star Bots Tamil</a></b>")
 LONG_IMDB_DESCRIPTION = is_enabled(environ.get("LONG_IMDB_DESCRIPTION", "True"), True)
+WELCOME_TEXT = environ.get("WELCOME_TEXT", "<b>Hello {mention}, Welcome to {title} Group!</b>")
 SPELL_CHECK_REPLY = is_enabled(environ.get("SPELL_CHECK_REPLY", "True"), True)
 PORT = environ.get("PORT", "8080")
 MAX_LIST_ELM = environ.get("MAX_LIST_ELM", None)
