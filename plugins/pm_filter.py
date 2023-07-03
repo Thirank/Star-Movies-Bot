@@ -83,8 +83,7 @@ async def pm_text(bot, message):
     await bot.send_message(
         chat_id=LOG_CHANNEL,
         text=f"<b>#PM_Message\n\nName :- {user}\n\nID :- {user_id}\n\nMovie :- {content}</b>"
-    )
-        
+    )       
 
 @Client.on_callback_query(filters.regex(r"^lang"))
 async def language_check(bot, query):
@@ -92,7 +91,7 @@ async def language_check(bot, query):
     if int(userid) not in [query.from_user.id, 0]:
         return await query.answer(script.ALRT_TXT.format(query.from_user.first_name), show_alert=True)
     if language == "unknown":
-        return await query.answer("Select Any Language From The Below Buttons..!", show_alert=True)
+        return await query.answer("Sᴇʟᴇᴄᴛ ᴀɴʏ ʟᴀɴɢᴜᴀɢᴇ ғʀᴏᴍ ᴛʜᴇ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs !", show_alert=True)
     movie = temp.KEYWORD.get(query.from_user.id)
     if not movie:
         return await query.answer(script.OLD_ALRT_TXT.format(query.from_user.first_name), show_alert=True)
@@ -102,17 +101,59 @@ async def language_check(bot, query):
     if files:
         settings = await get_settings(query.message.chat.id)
         temp.SEND_ALL_TEMP[query.from_user.id] = files
+        if 'is_shortlink' in settings.keys():
+            ENABLE_SHORTLINK = settings['is_shortlink']
+        else:
+            await save_group_settings(query.message.chat.id, 'is_shortlink', False)
+            ENABLE_SHORTLINK = False
         pre = 'filep' if settings['file_secure'] else 'file'
-    if settings['button']:
-        btn = [
-            [
-                InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
-                    url=await get_shortlink(f"https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}")
-                ),
+        if ENABLE_SHORTLINK and settings['button']:
+            btn = [
+                [
+                    InlineKeyboardButton(
+                        text=f"[{get_size(file.file_size)}] {file.file_name}", url=await get_shortlink(query.message.chat.id, f"https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}")
+                    ),
+                ]
+                for file in files
             ]
-            for file in files
-        ]
+        elif ENABLE_SHORTLINK and not settings['button']:
+            btn = [
+                [
+                    InlineKeyboardButton(
+                        text=f"{file.file_name}",
+                        url=await get_shortlink(query.message.chat.id, f"https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}")
+                    ),
+                    InlineKeyboardButton(
+                        text=f"{get_size(file.file_size)}",
+                        url=await get_shortlink(query.message.chat.id, f"https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}")
+                    ),
+                ]
+                for file in files
+            ]
+        elif settings['button'] and not ENABLE_SHORTLINK:
+            btn = [
+                [
+                    InlineKeyboardButton(
+                        text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    ),
+                ]
+                for file in files
+            ]
+        else:
+            btn = [
+                [
+                    InlineKeyboardButton(
+                        text=f"{file.file_name}",
+                        callback_data=f'{pre}#{file.file_id}',
+                    ),
+                    InlineKeyboardButton(
+                        text=f"{get_size(file.file_size)}",
+                        callback_data=f'{pre}#{file.file_id}',
+                    ),
+                ]
+                for file in files
+            ]
+
         try:
             if settings['auto_delete']:
                 btn.insert(0, 
@@ -130,7 +171,7 @@ async def language_check(bot, query):
                         InlineKeyboardButton(f'ꜱᴇʀɪᴇꜱ', 'sinfo')
                     ]
                 )
-                    
+
         except KeyError:
             await save_group_settings(query.message.chat.id, 'auto_delete', True)
             btn.insert(0, 
@@ -140,9 +181,9 @@ async def language_check(bot, query):
                     InlineKeyboardButton(f'ꜱᴇʀɪᴇꜱ', 'sinfo')
                 ]
             )
-        
+
         btn.insert(0, [
-            InlineKeyboardButton("! Sᴇɴᴅ Aʟʟ Tᴏ PM !", callback_data=f"send_fall#{pre}#{0}#{userid}"),
+            InlineKeyboardButton("! Sᴇɴᴅ Aʟʟ Fɪʟᴇs Tᴏ PM !", callback_data=f"send_fall#{pre}#{0}"),
             InlineKeyboardButton("! Lᴀɴɢᴜᴀɢᴇs !", callback_data=f"select_lang#{userid}")
         ])
 
@@ -180,9 +221,9 @@ async def language_check(bot, query):
         except MessageNotModified:
             pass
         await query.answer()
-    else:        
-        return await query.answer(f"Sorry, No Files 📂 Found For Your Query 🎥 {movie}.", show_alert=True)
-       
+    else:
+        return await query.answer(f"Sᴏʀʀʏ, Nᴏ ғɪʟᴇs ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ ᴏ̨ᴜᴇʀʏ {movie}.", show_alert=True)
+
 @Client.on_callback_query(filters.regex(r"^select_lang"))
 async def select_language(bot, query):
     _, userid = query.data.split("#")
