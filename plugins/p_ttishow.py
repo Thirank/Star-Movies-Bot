@@ -56,8 +56,21 @@ async def save_group(bot, message):
                 temp.MELCOW['welcome'] = await message.reply_video(
                 video="https://telegra.ph/file/11d612c9f9a61c19427b0.mp4",                                               
                                                  caption=f'<b>Hello 👋🏻 {u.mention},\nWelcome to Star Movies Request Group.\nWe are Providing Tamil, Telugu, Hindi, Malayalam, Kannada, English and Extra... I Can Support Upto 4GB File. Keep me Join to Our Official Channels to Receive Bot & Movies Updates in <a href=https://t.me/Star_Bots_Tamil><b></b>Star Bots Tamil</a> & <a href=https://t.me/Star_Moviess_Tamil><b></b>Star Movies Tamil</a>.</b>',
-                                                 reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚫 Group Rules 🚫', url='http://t.me/MissRose_bot?start=rules_-1001650088903') ] ] )
+                                                 reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚫 Group Rules 🚫', url='http://t.me/MissRose_bot?start=rules_-1001650088903') ], [ InlineKeyboardButton('🎥 Movie Updates', url='https://t.me/Star_Moviess_Tamil') ], [ InlineKeyboardButton('🤖 Bot Updates', url='https://t.me/Star_Bots_Tamil') ] ] )
                 )
+    else:
+        settings = await get_settings(message.chat.id)
+        if settings["welcome_text"]:
+            for u in message.new_chat_members:
+                WELCOME = settings['welcome_text']
+                welcome_msg = WELCOME.format(
+                    mention = u.mention,
+                    title = message.chat.title
+                ),
+                reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚫 Group Rules 🚫', url='http://t.me/MissRose_bot?start=rules_-1001650088903') ], [ InlineKeyboardButton('🎥 Movie Updates', url='https://t.me/Star_Moviess_Tamil') ], [ InlineKeyboardButton('🤖 Bot Updates', url='https://t.me/Star_Bots_Tamil') ] ] ),
+                disable_web_page_preview=True
+                )
+                await message.reply(welcome_msg)                
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
