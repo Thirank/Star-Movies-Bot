@@ -58,7 +58,7 @@ async def save_group(bot, message):
                                                  caption=f'<b>Hello 👋🏻 {u.mention},\nWelcome to Star Movies Request Group.\nWe are Providing Tamil, Telugu, Hindi, Malayalam, Kannada, English and Extra... I Can Support Upto 4GB File. Keep me Join to Our Official Channels to Receive Bot & Movies Updates in <a href=https://t.me/Star_Bots_Tamil><b></b>Star Bots Tamil</a> & <a href=https://t.me/Star_Moviess_Tamil><b></b>Star Movies Tamil</a>.</b>',
                                                  reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚫 Group Rules 🚫', url='http://t.me/MissRose_bot?start=rules_-1001650088903') ], [ InlineKeyboardButton('🎥 Movie Updates', url='https://t.me/Star_Moviess_Tamil') ], [ InlineKeyboardButton('🤖 Bot Updates', url='https://t.me/Star_Bots_Tamil') ] ] )
                 )
-     try:
+    try:
         settings = await get_settings(message.chat.id)
         if settings["welcome_text"]:
             for u in message.new_chat_members:
