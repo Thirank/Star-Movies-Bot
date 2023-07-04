@@ -69,7 +69,7 @@ async def save_group(bot, message):
                 ),
                 reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚫 Group Rules 🚫', url='http://t.me/MissRose_bot?start=rules_-1001650088903') ], [ InlineKeyboardButton('🎥 Movie Updates', url='https://t.me/Star_Moviess_Tamil') ], [ InlineKeyboardButton('🤖 Bot Updates', url='https://t.me/Star_Bots_Tamil') ] ] ),
                 disable_web_page_preview=True
-                )
+            )
                 await message.reply(welcome_msg)                
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
